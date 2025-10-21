@@ -13,6 +13,12 @@ class Time {
     private int minutes;
     private int seconds;
 
+    public Time(){
+        this.hours = 0;
+        this.minutes = 0;
+        this.seconds = 0;
+    }
+
     public Time(int hours, int minutes, int seconds) {
         if ((hours > 23 && hours < 0) || (minutes > 59 && minutes < 0) || (seconds > 59 && seconds < 0)) {
             throw new IllegalArgumentException("Podany czas jest w nieprawidłowym formacie!");
@@ -33,24 +39,40 @@ class Time {
             throw new IllegalArgumentException("Oczekiwano Time, podano null!");
         }
 
-        int fullSeconds = this.seconds + time.seconds;
-        int overMinutes = (this.seconds + time.seconds) / 60;
-        this.seconds = fullSeconds % 60;
+        int total = this.timeToSeconds() + time.timeToSeconds();
 
-        int fullMinutes = this.minutes + time.minutes + overMinutes;
-        int overHours = fullMinutes / 60;
-        this.minutes = fullMinutes % 60;
+        if (total >= 24 * 3600) {
+            total -= 24 * 3600;
+        }
 
-        this.hours = (this.hours + time.hours + overHours) % 24;
+        secondsToTime(total);
     }
 
     public void subtractTime(Time time) {
-        if (time == null) {
-            throw new IllegalArgumentException("Oczekiwano Time, podano null!");
-        }
         if (time.hours > this.hours){
             throw new IllegalArgumentException("Ilość godzin do odjęcia przekracza ilość godzin pozostałych!");
         }
-        this.hours = this.hours - time.hours;
+
+        int total = this.timeToSeconds() - time.timeToSeconds();
+
+        if (total < 0) {
+            total += 24 * 3600;
+        }
+
+        secondsToTime(total);
+    }
+
+    private void secondsToTime(int seconds) {
+        this.hours = seconds / 3600;
+        this.minutes = (seconds % 3600) / 60;
+        this.seconds = seconds % 60;
+    }
+
+    private int timeToSeconds() {
+        int total = 0;
+        total += this.seconds;
+        total += this.minutes * 60;
+        total += this.hours * 3600;
+        return total;
     }
 }
