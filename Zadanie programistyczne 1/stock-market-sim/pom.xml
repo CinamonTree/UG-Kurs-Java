@@ -6,9 +6,7 @@
   <groupId>com.stockmarket</groupId>
   <artifactId>stock-market-sim</artifactId>
   <version>1.0-SNAPSHOT</version>
-
   <name>stock-market-sim</name>
-  <!-- FIXME change it to the project's website -->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -33,10 +31,14 @@
       <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- Optionally: parameterized tests support -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
