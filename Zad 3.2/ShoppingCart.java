@@ -20,13 +20,11 @@ public class ShoppingCart {
     }
 
     public void removeItem(String productName) {
-        int itemIndex = findItemIndex(productName);
-        if (itemIndex < 0) {
+        int itemIndex = findItemIndexByName(productName);
+        if (!isItemIndexFound(itemIndex)) {
             return;
         }
-        this.items[itemIndex] = null;
-        shiftItemsLeft(itemIndex);
-        this.itemCount--;
+        deleteItemAt(itemIndex);
     }
 
     public double calculateTotal() {
@@ -43,7 +41,17 @@ public class ShoppingCart {
         }
     }
 
-    private int findItemIndex(String productName) {
+    private void deleteItemAt(int index) {
+        this.items[index] = null;
+        shiftItemsLeft(index);
+        this.itemCount--;
+    }
+
+    private boolean isItemIndexFound(int index) {
+        return index >= 0;
+    }
+
+    private int findItemIndexByName(String productName) {
         for (int i = 0; i < this.itemCount; i++) {
             if (this.items[i].getName().equals(productName)) {
                 return i;
