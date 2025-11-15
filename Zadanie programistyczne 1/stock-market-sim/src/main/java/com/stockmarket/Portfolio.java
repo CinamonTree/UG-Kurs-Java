@@ -38,15 +38,20 @@ public class Portfolio {
 
     public void addStock(Stock stock, int quantity) {
         StockHolding stockHolding = findStockHolding(stock);
-        boolean isStockFound = stockHolding != null;
 
-        if (isStockFound) {
-            stockHolding.quantity += quantity;
-        } else if (!isHoldingsWalletFull()) {
-            addNewStockHolding(stock, quantity);
-        } else {
-            System.err.println("UWAGA! Pełen portfel.");
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Nie można dodać ujemnej liczy akcji.");
         }
+        if (stockHolding != null) {
+            stockHolding.quantity += quantity;
+            holdingsCount++;
+            return;
+        }
+        if (!isHoldingsWalletFull()) {
+            addNewStockHolding(stock, quantity);
+            return;
+        }
+        System.err.println("UWAGA! Pełen portfel.");
     }
 
     public double calculateStockValue() {
