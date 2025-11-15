@@ -44,7 +44,6 @@ public class Portfolio {
         }
         if (stockHolding != null) {
             stockHolding.quantity += quantity;
-            holdingsCount++;
             return;
         }
         if (!isHoldingsWalletFull()) {
