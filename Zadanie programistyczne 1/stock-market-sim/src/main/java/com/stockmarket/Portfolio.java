@@ -36,21 +36,23 @@ public class Portfolio {
         this.holdingsCount = 0;
     }
 
-    public void addStock(Stock stock, int quantity) {
-        StockHolding stockHolding = findStockHolding(stock);
-
+    public void addStock(Stock stock, int quantity) throws PortfolioWalletISFullException{
+        if (stock == null) {
+            throw new IllegalArgumentException("Metoda addStock musi przyjąć obiekt typu Stock. podano null.");
+        }
         if (quantity < 0) {
             throw new IllegalArgumentException("Nie można dodać ujemnej liczy akcji.");
         }
+        if (isHoldingsWalletFull()) {
+            throw new PortfolioWalletISFullException("Nie można dodać akcji do portfolio, portfel akcji jest pełny.");
+        }
+
+        StockHolding stockHolding = findStockHolding(stock);
         if (stockHolding != null) {
             stockHolding.quantity += quantity;
             return;
         }
-        if (!isHoldingsWalletFull()) {
-            addNewStockHolding(stock, quantity);
-            return;
-        }
-        System.err.println("UWAGA! Pełen portfel.");
+        addNewStockHolding(stock, quantity);
     }
 
     public double calculateStockValue() {
