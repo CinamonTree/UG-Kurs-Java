@@ -2,6 +2,7 @@ package com.stockmarket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -84,7 +85,7 @@ public class PortfolioTest {
     }
 
     @Test
-    public void shouldNotAddMoreThanMaxHoldings() {
+    public void shouldThrowExceptionWhenTryingToAddStockToFullWallet() {
         Portfolio portfolio = new Portfolio(1000.0);
 
         portfolio.addStock(new Stock("S1", "Company1", 5.0), 1);
@@ -97,10 +98,7 @@ public class PortfolioTest {
         portfolio.addStock(new Stock("S8", "Company8", 5.0), 1);
         portfolio.addStock(new Stock("S9", "Company9", 5.0), 1);
         portfolio.addStock(new Stock("S10", "Company10", 5.0), 1);
-        portfolio.addStock(new Stock("S11", "Company11", 5.0), 1); // ta nie powinna się dodać
-
-        // Sprawdzamy, że licznik zatrzymał się na 10
-        assertEquals(10, portfolio.getHoldingsCount());
+        assertThrows( PortfolioWalletISFullException.class, () -> portfolio.addStock(new Stock("S11", "Company11", 5.0), 1));
     }
 
     @Test
