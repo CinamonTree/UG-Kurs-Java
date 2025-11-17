@@ -38,6 +38,33 @@ public class Portfolio {
         this.holdingsCount = 0;
     }
 
+    public double getCash() {
+        return this.cash;
+    }
+
+    public double addCash(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Nie można dodać ujemnej ilości gotówki do portfela.");
+        }
+        this.cash += amount;
+        return this.cash;
+    }
+
+    public double withdrawCash(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Nie można wypłacić ujemnej ilości gotówki z portfela.");
+        }
+        if (amount > this.cash) {
+            throw new IllegalArgumentException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
+        }
+        this.cash -= amount;
+        return this.cash;
+    }
+
+    public int getHoldingsCount() {
+        return this.holdingsCount;
+    }
+
     public void addStock(Stock stock, int quantity) throws PortfolioWalletISFullException{
         if (stock == null) {
             throw new IllegalArgumentException("Metoda addStock musi przyjąć obiekt typu Stock. podano null.");
@@ -69,14 +96,6 @@ public class Portfolio {
 
     public double calculateTotalValue() {
         return this.cash + this.calculateStockValue();
-    }
-
-    public double getCash() {
-        return this.cash;
-    }
-
-    public int getHoldingsCount() {
-        return this.holdingsCount;
     }
 
     public int getStockQuantity(Stock stock) {
