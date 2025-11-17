@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import com.stockmarket.exceptions.PortfolioWalletISFullException;
+
 public class PortfolioTest {
 
     @Test

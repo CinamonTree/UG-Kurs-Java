@@ -1,5 +1,7 @@
 package com.stockmarket;
 
+import com.stockmarket.exceptions.PortfolioWalletISFullException;
+
 public class Portfolio {
 
     private double cash;

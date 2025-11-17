@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.exceptions;
 
 public class PortfolioWalletISFullException extends RuntimeException {
     public PortfolioWalletISFullException(String message) {
