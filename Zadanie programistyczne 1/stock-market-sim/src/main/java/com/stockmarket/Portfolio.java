@@ -1,5 +1,6 @@
 package com.stockmarket;
 
+import com.stockmarket.exceptions.NotEnoughCashException;
 import com.stockmarket.exceptions.PortfolioWalletISFullException;
 
 public class Portfolio {
@@ -51,7 +52,7 @@ public class Portfolio {
     public double withdrawCash(double amount) {
         amount = validateCashAmount(amount);
         if (amount > this.cash) {
-            throw new IllegalArgumentException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
+            throw new NotEnoughCashException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
         }
         this.cash -= amount;
         return this.cash;
