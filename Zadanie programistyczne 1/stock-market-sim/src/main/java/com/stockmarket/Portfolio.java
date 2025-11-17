@@ -13,22 +13,22 @@ public class Portfolio {
         private int quantity;
 
         public StockHolding(Stock stock, int quantity) {
-            validateStock(stock);
-            validateQuantity(quantity);
-            this.stock = stock;
-            this.quantity = quantity;
+            this.stock = validateStock(stock);
+            this.quantity = validateQuantity(quantity);
         }
 
-        private void validateQuantity(int quantity) {
+        private int validateQuantity(int quantity) {
             if (quantity < 0) {
                 throw new IllegalArgumentException("Ilość posiadanych akcji nie może być ujemna");
             }
+            return quantity;
         }
 
-        private void validateStock(Stock stock) {
+        private Stock validateStock(Stock stock) {
             if (stock == null) {
                 throw new IllegalArgumentException("Podano argument null dla parametru konstruktora obiektu.");
             }
+            return stock;
         }
     }
 
