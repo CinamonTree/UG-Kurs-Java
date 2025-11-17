@@ -33,7 +33,7 @@ public class Portfolio {
     }
 
     public Portfolio(double initialCash) {
-        this.cash = initialCash;
+        this.cash = validateCashAmount(initialCash);
         this.holdings = new StockHolding[10];
         this.holdingsCount = 0;
     }
@@ -43,17 +43,13 @@ public class Portfolio {
     }
 
     public double addCash(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Nie można dodać ujemnej ilości gotówki do portfela.");
-        }
+        amount = validateCashAmount(amount);
         this.cash += amount;
         return this.cash;
     }
 
     public double withdrawCash(double amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Nie można wypłacić ujemnej ilości gotówki z portfela.");
-        }
+        amount = validateCashAmount(amount);
         if (amount > this.cash) {
             throw new IllegalArgumentException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
         }
@@ -123,5 +119,12 @@ public class Portfolio {
     private void addNewStockHolding(Stock stock, int quantity) {
         this.holdings[this.holdingsCount] = new StockHolding(stock, quantity);
         this.holdingsCount++;
+    }
+
+    private double validateCashAmount(double amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Kwota gotówki nie może być ujemna.");
+        }
+        return amount;
     }
 }
