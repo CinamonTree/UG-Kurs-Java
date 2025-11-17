@@ -7,9 +7,9 @@ public class Stock {
     private final double value;
 
     public Stock(String code, String companyName, double value) {
-        this.code = code;
-        this.companyName = companyName;
-        this.value = value;
+        this.code = validateCode(code);
+        this.companyName = validateCompanyName(companyName);
+        this.value = validateCompanyName(value);
     }
 
     public String getCode() {
@@ -22,6 +22,27 @@ public class Stock {
     
     public double getValue() {
         return this.value;
+    }
+
+    private String validateCode(String code) {
+        if (code == null || code.isEmpty()) {
+            throw new IllegalArgumentException("Kod akcji nie może być pusty. Podano: " + code);
+        }
+        return code;
+    }
+
+    private String validateCompanyName(String companyName) {
+        if (code == null || code.isEmpty()) {
+            throw new IllegalArgumentException("Nazwa firmy nie może być pusty. Podano: " + companyName);
+        }
+        return code;
+    }
+
+    private double validateCompanyName(double value) {
+        if (value < 0) {
+            throw new IllegalArgumentException("Wartość akcji nie może być ujemna.");
+        }
+        return value;
     }
 
     @Override
