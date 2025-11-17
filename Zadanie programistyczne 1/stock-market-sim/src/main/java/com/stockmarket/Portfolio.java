@@ -8,7 +8,7 @@ public class Portfolio {
     private StockHolding[] holdings;
     private int holdingsCount;
 
-    private static class StockHolding {
+    private class StockHolding {
         private Stock stock;
         private int quantity;
 
