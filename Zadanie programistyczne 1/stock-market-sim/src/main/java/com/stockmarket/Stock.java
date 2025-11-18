@@ -1,7 +1,7 @@
 package com.stockmarket;
 
 public class Stock {
-
+    
     private final String code;
     private final String companyName;
     private double value;

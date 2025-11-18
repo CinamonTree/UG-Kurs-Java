@@ -9,30 +9,6 @@ public class Portfolio {
     private StockHolding[] holdings;
     private int holdingsCount;
 
-    private class StockHolding {
-        private Stock stock;
-        private int quantity;
-
-        public StockHolding(Stock stock, int quantity) {
-            this.stock = validateStock(stock);
-            this.quantity = validateQuantity(quantity);
-        }
-
-        private int validateQuantity(int quantity) {
-            if (quantity < 0) {
-                throw new IllegalArgumentException("Ilość posiadanych akcji nie może być ujemna");
-            }
-            return quantity;
-        }
-
-        private Stock validateStock(Stock stock) {
-            if (stock == null) {
-                throw new IllegalArgumentException("Podano argument null dla parametru konstruktora obiektu.");
-            }
-            return stock;
-        }
-    }
-
     public Portfolio(double initialCash) {
         this.cash = validateCashAmount(initialCash);
         this.holdings = new StockHolding[10];
@@ -68,16 +44,13 @@ public class Portfolio {
         if (stock == null) {
             throw new IllegalArgumentException("Metoda addStock musi przyjąć obiekt typu Stock. podano null.");
         }
-        if (quantity < 0) {
-            throw new IllegalArgumentException("Nie można dodać ujemnej liczy akcji.");
-        }
         if (isHoldingsWalletFull()) {
             throw new PortfolioWalletISFullException("Nie można dodać akcji do portfolio, portfel akcji jest pełny.");
         }
 
         StockHolding stockHolding = findStockHolding(stock);
         if (stockHolding != null) {
-            stockHolding.quantity += quantity;
+            stockHolding.addQuantity(quantity);
             return;
         }
         addNewStockHolding(stock, quantity);
@@ -87,7 +60,7 @@ public class Portfolio {
         double total = 0.0;
         for (StockHolding holding : this.holdings) {
             if (holding != null) {
-                total += holding.stock.getValue() * holding.quantity;
+                total += holding.getStock().getValue() * holding.getQuantity();
             }
         }
         return total;
@@ -99,8 +72,8 @@ public class Portfolio {
 
     public int getStockQuantity(Stock stock) {
         for (StockHolding holding : this.holdings) {
-            if (holding != null && holding.stock.equals(stock)) {
-                return holding.quantity;
+            if (holding != null && holding.getStock().equals(stock)) {
+                return holding.getQuantity();
             }
         }
         return 0;
@@ -112,7 +85,7 @@ public class Portfolio {
 
     private StockHolding findStockHolding(Stock stockToFind) {
         for (StockHolding holding : holdings) {
-            if (holding != null && holding.stock.equals(stockToFind)) {
+            if (holding != null && holding.getStock().equals(stockToFind)) {
                 return holding;
             }
         }

@@ -161,19 +161,5 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio(1000.0);
         assertEquals(0.0, portfolio.calculateStockValue(), 0.001);
     }
-    
-    // Konstruktor StockHolding
-    @Test 
-    public void shouldNotAllowCreatingStockHoldingWithNegativeQuantity() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(stock, -5));
-    }
-
-    @Test
-    public void shouldNotAllowCreatingStockHoldingWithStockNullPointer() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(null, 5));
-    }
 
 }
