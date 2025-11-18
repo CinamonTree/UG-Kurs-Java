@@ -9,6 +9,8 @@ import com.stockmarket.exceptions.PortfolioWalletISFullException;
 
 public class PortfolioTest {
 
+    // TODO: wyciągnąć powtarzający się kod do metod pomocniczych
+
     // Konstruktor
     @Test
     public void shouldCreateEmptyPortfolioWithInitialCash() {
