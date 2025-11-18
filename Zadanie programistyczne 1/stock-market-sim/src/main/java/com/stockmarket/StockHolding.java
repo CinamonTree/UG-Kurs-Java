@@ -3,7 +3,7 @@ package com.stockmarket;
 public class StockHolding {
 
     /**
-     * Klasa StockHolding reprezentuję posiadaną akcję w portfelu inwestycyjnym.
+     * Klasa StockHolding reprezentuję posiadane akcje danego typu w portfelu inwestycyjnym.
      */
 
     private Stock stock;
