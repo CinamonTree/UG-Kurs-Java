@@ -2,6 +2,7 @@ package com.stockmarket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
@@ -59,5 +60,17 @@ public class StockTest {
         Stock stock = new Stock("CDR", "CD Projekt", 256.80);
         assertTrue(stock.equals(stock));
     }
-    
+
+    @Test
+    public void shouldSetCorrectStockValue() {
+        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
+        stock.setValue(300.50);
+        assertEquals(300.50, stock.getValue(), 0.001);
+    }
+
+    @Test
+    public void shouldNotAllowSettingNegativeValueOfStock() {
+        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
+        assertThrows(IllegalArgumentException.class, () -> stock.setValue(-200));
+    }
 }
