@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import com.stockmarket.exceptions.NotEnoughCashException;
 import com.stockmarket.exceptions.PortfolioWalletISFullException;
 
 public class PortfolioTest {
@@ -119,4 +120,63 @@ public class PortfolioTest {
         assertTrue(portfolio.getStockQuantity(stock) > 0);
         assertFalse(portfolio.getHoldingsCount() == 0);
     }
+    
+    @Test 
+    public void shouldNotAllowCreatingStockHoldingWithNegativeQuantity() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(stock, -5));
+    }
+
+    @Test
+    public void shouldNotAllowCreatingStockHoldingWithStockNullPointer() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(null, 5));
+    }
+
+    @Test
+    public void shouldNotAllowToAddNegativeAmountOfCash() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addCash(-500.0));
+    }
+
+    @Test
+    public void shouldAddCashCorrectly() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        portfolio.addCash(500.0);
+        assertEquals(1500.0, portfolio.getCash(), 0.001);
+    }
+
+    @Test
+    public void shouldNotAllowToWithdrawMoreCashThanAvailable() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        assertThrows(NotEnoughCashException.class, () -> portfolio.withdrawCash(1500.0));
+    }
+
+    @Test
+    public void shouldNotAllowToWithdrawNegativeAmountOfCash() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.withdrawCash(-200.0));
+    }
+
+    @Test
+    public void shouldWithdrawCashCorrectly() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        portfolio.withdrawCash(400.0);
+        assertEquals(600.0, portfolio.getCash(), 0.001);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenAddingStockWithNullPointer() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(null, 10));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenAddingStockWithNegativeQuantity() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
+        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(stock, -10));
+    }
+
 }
