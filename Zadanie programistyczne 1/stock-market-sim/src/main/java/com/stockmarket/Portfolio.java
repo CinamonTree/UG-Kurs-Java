@@ -111,9 +111,9 @@ public class Portfolio {
     }
 
     private StockHolding findStockHolding(Stock stockToFind) {
-        for (int i = 0; i < holdings.length; i++) {
-            if (holdings[i] != null && holdings[i].stock.equals(stockToFind)) {
-                return holdings[i];
+        for (StockHolding holding : holdings) {
+            if (holding != null && holding.stock.equals(stockToFind)) {
+                return holding;
             }
         }
         return null;
