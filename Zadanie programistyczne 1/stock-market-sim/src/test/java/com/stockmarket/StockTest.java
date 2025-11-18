@@ -18,6 +18,26 @@ public class StockTest {
         assertEquals(256.80, exampleStock.getValue(), 0.001);
     }
 
+    @Test
+    public void shouldThrowExceptionWhenStockCodeIsEmptyString() {
+        assertThrows(IllegalArgumentException.class, () -> new Stock("CDR", "", 256.80));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCreatingStockWithNullCode() {
+        assertThrows(IllegalArgumentException.class, () -> new Stock(null, "CD Project RED", 256.80));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCreatingStockWithNullCompanyName() {
+        assertThrows(IllegalArgumentException.class, () -> new Stock("CDR", null, 256.80));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenCompanyNameIsEmptyString() {
+        assertThrows(IllegalArgumentException.class, () -> new Stock("CDR", "", 256.80));
+    }
+
     //Metoda setValue
     @Test
     public void shouldNotAllowSettingNegativeValueOfStock() {
