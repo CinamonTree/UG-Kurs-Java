@@ -50,11 +50,13 @@ public class Portfolio {
     }
 
     public double withdrawCash(double amount) {
-        amount = validateCashAmount(amount);
-        if (amount > this.cash) {
+        double validAmount = validateCashAmount(amount);
+
+        if (validAmount > this.cash) {
             throw new NotEnoughCashException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
         }
-        this.cash -= amount;
+        
+        this.cash -= validAmount;
         return this.cash;
     }
 
