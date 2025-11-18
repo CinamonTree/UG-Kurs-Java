@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class StockTest {
 
+    //Konstruktor
     @Test
     public void shouldCreateStock() {
         Stock exampleStock = new Stock("CDR", "CD Project RED", 256.80);
@@ -17,6 +18,21 @@ public class StockTest {
         assertEquals(256.80, exampleStock.getValue(), 0.001);
     }
 
+    //Metoda setValue
+    @Test
+    public void shouldNotAllowSettingNegativeValueOfStock() {
+        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
+        assertThrows(IllegalArgumentException.class, () -> stock.setValue(-200));
+    }
+
+    @Test
+    public void shouldSetCorrectStockValue() {
+        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
+        stock.setValue(300.50);
+        assertEquals(300.50, stock.getValue(), 0.001);
+    }
+
+    //Metoda equals
     @Test
     public void shouldCompareObjectsBySymbol() {
         Stock exampleStock1 = new Stock("CDR", "CD Project RED", 256.80);
@@ -48,29 +64,8 @@ public class StockTest {
     }
 
     @Test
-    public void shouldBeImmutableAfterCreation() {
-        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
-        assertEquals("CDR", stock.getCode());
-        assertEquals("CD Projekt", stock.getCompanyName());
-        assertEquals(256.80, stock.getValue(), 0.001);
-    }
-
-    @Test
     public void shouldBeEqualToItself() {
         Stock stock = new Stock("CDR", "CD Projekt", 256.80);
         assertTrue(stock.equals(stock));
-    }
-
-    @Test
-    public void shouldSetCorrectStockValue() {
-        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
-        stock.setValue(300.50);
-        assertEquals(300.50, stock.getValue(), 0.001);
-    }
-
-    @Test
-    public void shouldNotAllowSettingNegativeValueOfStock() {
-        Stock stock = new Stock("CDR", "CD Projekt", 256.80);
-        assertThrows(IllegalArgumentException.class, () -> stock.setValue(-200));
     }
 }

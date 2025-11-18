@@ -56,12 +56,7 @@ public class Stock {
         if (!(other instanceof Stock)) return false; // gdy przekazano obiekt który nie jest instancją Stock zwróć false
 
         Stock otherAsStock = (Stock) other; // rzutowanie aby dostać dostęp do pól i metod
-        
-        if (this.code == null) { // jeżeli code tego obiektu jest null sprawdź czy drugiego też
-            return otherAsStock.code == null;
-        } else { // a jeżeli nie to porównaj stringi z equals
-            return code.equals(otherAsStock.code);
-        }
+        return code.equals(otherAsStock.code);
     }
 
     @Override
