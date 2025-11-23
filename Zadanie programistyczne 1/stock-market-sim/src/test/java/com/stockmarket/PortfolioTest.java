@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import com.stockmarket.exceptions.NotEnoughCashException;
-import com.stockmarket.exceptions.PortfolioWalletISFullException;
 
 public class PortfolioTest {
 
@@ -18,7 +17,7 @@ public class PortfolioTest {
 
         assertEquals(1000.0, portfolio.getCash(), 0.001);
         assertEquals(0, portfolio.getHoldingsCount());
-        assertEquals(0.0, portfolio.calculateStockValue(), 0.001);
+        assertEquals(0.0, portfolio.calculateTotalStockValue(), 0.001);
         assertEquals(1000.0, portfolio.calculateTotalValue(), 0.001);
     }
 
@@ -95,23 +94,6 @@ public class PortfolioTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenTryingToAddStockToFullWallet() {
-        Portfolio portfolio = new Portfolio(1000.0);
-
-        portfolio.addStock(new Stock("S1", "Company1", 5.0), 1);
-        portfolio.addStock(new Stock("S2", "Company2", 5.0), 1);
-        portfolio.addStock(new Stock("S3", "Company3", 5.0), 1);
-        portfolio.addStock(new Stock("S4", "Company4", 5.0), 1);
-        portfolio.addStock(new Stock("S5", "Company5", 5.0), 1);
-        portfolio.addStock(new Stock("S6", "Company6", 5.0), 1);
-        portfolio.addStock(new Stock("S7", "Company7", 5.0), 1);
-        portfolio.addStock(new Stock("S8", "Company8", 5.0), 1);
-        portfolio.addStock(new Stock("S9", "Company9", 5.0), 1);
-        portfolio.addStock(new Stock("S10", "Company10", 5.0), 1);
-        assertThrows( PortfolioWalletISFullException.class, () -> portfolio.addStock(new Stock("S11", "Company11", 5.0), 1));
-    }
-
-    @Test
     public void shouldThrowExceptionWhenAddingStockWithNullPointer() {
         Portfolio portfolio = new Portfolio(1000.0);
         assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(null, 10));
@@ -134,7 +116,7 @@ public class PortfolioTest {
         portfolio.addStock(stockA, 2);
         portfolio.addStock(stockB, 3);
 
-        assertEquals(800.0, portfolio.calculateStockValue(), 0.001);
+        assertEquals(800.0, portfolio.calculateTotalStockValue(), 0.001);
     }
 
     // Metoda obliczająca wartość całego portfolio
@@ -159,7 +141,7 @@ public class PortfolioTest {
     @Test
     public void shouldReturnZeroStockValueWhenNoHoldings() {
         Portfolio portfolio = new Portfolio(1000.0);
-        assertEquals(0.0, portfolio.calculateStockValue(), 0.001);
+        assertEquals(0.0, portfolio.calculateTotalStockValue(), 0.001);
     }
 
 }

@@ -37,6 +37,10 @@ public class StockHolding {
         return this.quantity;
     }
 
+    public double calculateValue() {
+        return quantity * stock.getValue();
+    }
+
     private int validateQuantity(int quantity) {
         if (quantity < 0) {
             throw new IllegalArgumentException("Ilość posiadanych akcji nie może być ujemna");

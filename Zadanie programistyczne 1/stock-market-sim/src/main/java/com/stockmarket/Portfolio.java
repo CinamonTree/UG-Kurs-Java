@@ -1,18 +1,19 @@
 package com.stockmarket;
 
+import java.util.logging.SocketHandler;
+
 import com.stockmarket.exceptions.NotEnoughCashException;
 import com.stockmarket.exceptions.PortfolioWalletISFullException;
+import com.stockmarket.exceptions.StockNotFoundInHoldingsException;
 
 public class Portfolio {
 
     private double cash;
-    private StockHolding[] holdings;
-    private int holdingsCount;
+    private HoldingsWallet holdingsWallet;
 
     public Portfolio(double initialCash) {
         this.cash = validateCashAmount(initialCash);
-        this.holdings = new StockHolding[10];
-        this.holdingsCount = 0;
+        this.holdingsWallet = new HoldingsWallet();
     }
 
     public double getCash() {
@@ -36,65 +37,27 @@ public class Portfolio {
         return this.cash;
     }
 
-    public int getHoldingsCount() {
-        return this.holdingsCount;
+    public int getTotalHoldingsCount() {
+        int count = 0;
+        for (StockHolding holding : holdingsWallet) {
+            count += holding.getQuantity();
+        }
     }
 
     public void addStock(Stock stock, int quantity) throws PortfolioWalletISFullException{
-        if (stock == null) {
-            throw new IllegalArgumentException("Metoda addStock musi przyjąć obiekt typu Stock. podano null.");
-        }
-        if (isHoldingsWalletFull()) {
-            throw new PortfolioWalletISFullException("Nie można dodać akcji do portfolio, portfel akcji jest pełny.");
-        }
-
-        StockHolding stockHolding = findStockHolding(stock);
-        if (stockHolding != null) {
-            stockHolding.addQuantity(quantity);
-            return;
-        }
-        addNewStockHolding(stock, quantity);
+        holdingsWallet.addHolding(stock, quantity);
     }
 
-    public double calculateStockValue() {
+    public double calculateTotalStockValue() {
         double total = 0.0;
-        for (StockHolding holding : this.holdings) {
-            if (holding != null) {
-                total += holding.getStock().getValue() * holding.getQuantity();
-            }
+        for (StockHolding holding : this.holdingsWallet.getAllHoldings()) {
+            total += holding.calculateValue();
         }
         return total;
     }
 
     public double calculateTotalValue() {
-        return this.cash + this.calculateStockValue();
-    }
-
-    public int getStockQuantity(Stock stock) {
-        for (StockHolding holding : this.holdings) {
-            if (holding != null && holding.getStock().equals(stock)) {
-                return holding.getQuantity();
-            }
-        }
-        return 0;
-    }
-
-    private boolean isHoldingsWalletFull() {
-        return this.holdingsCount >= this.holdings.length;
-    }
-
-    private StockHolding findStockHolding(Stock stockToFind) {
-        for (StockHolding holding : holdings) {
-            if (holding != null && holding.getStock().equals(stockToFind)) {
-                return holding;
-            }
-        }
-        return null;
-    }
-
-    private void addNewStockHolding(Stock stock, int quantity) {
-        this.holdings[this.holdingsCount] = new StockHolding(stock, quantity);
-        this.holdingsCount++;
+        return this.cash + this.calculateTotalStockValue();
     }
 
     private double validateCashAmount(double amount) {
