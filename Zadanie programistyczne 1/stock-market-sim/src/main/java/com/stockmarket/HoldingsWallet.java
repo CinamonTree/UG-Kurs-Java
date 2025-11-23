@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import com.stockmarket.exceptions.StockNotFoundInHoldingsException;
 
-public class HoldingsWallet {
+/**
+* Klasa Holdings reprezentuję cały zestaw akcji posiadanych w portfolio
+*/
 
-    /**
-     * Klasa Holdings reprezentuję cały zestaw akcji posiadanych w portfolio
-     */
+public class HoldingsWallet {
 
     private ArrayList<StockHolding> holdingsList;
 

@@ -1,10 +1,9 @@
 package com.stockmarket;
 
-import java.util.logging.SocketHandler;
-
 import com.stockmarket.exceptions.NotEnoughCashException;
 import com.stockmarket.exceptions.PortfolioWalletISFullException;
-import com.stockmarket.exceptions.StockNotFoundInHoldingsException;
+
+// TODO: poprawić przedawniony wyjątek PortfolioWalletISFullException
 
 public class Portfolio {
 
@@ -37,18 +36,19 @@ public class Portfolio {
         return this.cash;
     }
 
-    public int getTotalHoldingsCount() {
-        int count = 0;
-        for (StockHolding holding : holdingsWallet) {
-            count += holding.getQuantity();
-        }
-    }
-
     public void addStock(Stock stock, int quantity) throws PortfolioWalletISFullException{
         holdingsWallet.addHolding(stock, quantity);
     }
+    
+    public int getTotalHoldingsCount() {
+        int count = 0;
+        for (StockHolding holding : holdingsWallet.getAllHoldings()) {
+            count += holding.getQuantity();
+        }
+        return count;
+    }
 
-    public double calculateTotalStockValue() {
+    public double calculateStockValue() {
         double total = 0.0;
         for (StockHolding holding : this.holdingsWallet.getAllHoldings()) {
             total += holding.calculateValue();
@@ -56,8 +56,8 @@ public class Portfolio {
         return total;
     }
 
-    public double calculateTotalValue() {
-        return this.cash + this.calculateTotalStockValue();
+    public double calculatePortfolioValue() {
+        return this.cash + this.calculateStockValue();
     }
 
     private double validateCashAmount(double amount) {

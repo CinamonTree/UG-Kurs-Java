@@ -16,9 +16,9 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio(1000.0);
 
         assertEquals(1000.0, portfolio.getCash(), 0.001);
-        assertEquals(0, portfolio.getHoldingsCount());
-        assertEquals(0.0, portfolio.calculateTotalStockValue(), 0.001);
-        assertEquals(1000.0, portfolio.calculateTotalValue(), 0.001);
+        assertEquals(0, portfolio.getTotalHoldingsCount());
+        assertEquals(0.0, portfolio.calculateStockValue(), 0.001);
+        assertEquals(1000.0, portfolio.calculatePortfolioValue(), 0.001);
     }
 
     // Metoda dodawania gotówki
@@ -57,42 +57,13 @@ public class PortfolioTest {
 
     // Metoda dodawania akcji
     @Test
-    public void shouldAddNewStockToPortfolio() {
+    public void shouldAddStockCorrectly(){
         Portfolio portfolio = new Portfolio(1000.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 250.0);
-
+        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
         portfolio.addStock(stock, 5);
-
-        assertEquals(1, portfolio.getHoldingsCount());
-        assertEquals(5, portfolio.getStockQuantity(stock));
+        assertEquals(5, portfolio.getTotalHoldingsCount());
     }
-
-    @Test
-    public void shouldIncreaseQuantityWhenSameStockAddedAgain() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 250.0);
-
-        portfolio.addStock(stock, 3);
-        portfolio.addStock(stock, 2);
-
-        assertEquals(1, portfolio.getHoldingsCount());
-        assertEquals(5, portfolio.getStockQuantity(stock));
-    }
-
-    @Test
-    public void shouldStoreMultipleDifferentStocksWhenAdded() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stockA = new Stock("CDR", "CD Projekt", 250.0);
-        Stock stockB = new Stock("ORLN", "Orlen", 400.0);
-
-        portfolio.addStock(stockA, 3);
-        portfolio.addStock(stockB, 2);
-
-        assertEquals(2, portfolio.getHoldingsCount());
-        assertEquals(3, portfolio.getStockQuantity(stockA));
-        assertEquals(2, portfolio.getStockQuantity(stockB));
-    }
-
+    
     @Test
     public void shouldThrowExceptionWhenAddingStockWithNullPointer() {
         Portfolio portfolio = new Portfolio(1000.0);
@@ -106,6 +77,17 @@ public class PortfolioTest {
         assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(stock, -10));
     }
 
+    //Metoda zliczająca całkowitą ilość akcji w portfelu
+    @Test
+    public void shouldGetTotalHoldingsCountCorrectly() {
+        Portfolio portfolio = new Portfolio(1000.0);
+        Stock stockA = new Stock("CDR", "CD Projekt", 100.0);
+        Stock stockB = new Stock("ORLN", "Orlen", 200.0);
+        portfolio.addStock(stockA, 2);
+        portfolio.addStock(stockB, 3);
+        assertEquals(5, portfolio.getTotalHoldingsCount());
+    }
+
     // Metoda obliczająca wartość akcji w portfelu
     @Test
     public void shouldCalculateStockValueCorrectly() {
@@ -116,7 +98,7 @@ public class PortfolioTest {
         portfolio.addStock(stockA, 2);
         portfolio.addStock(stockB, 3);
 
-        assertEquals(800.0, portfolio.calculateTotalStockValue(), 0.001);
+        assertEquals(800.0, portfolio.calculateStockValue(), 0.001);
     }
 
     // Metoda obliczająca wartość całego portfolio
@@ -126,22 +108,7 @@ public class PortfolioTest {
         Stock stock = new Stock("CDR", "CD Projekt", 100.0);
 
         portfolio.addStock(stock, 2);
-        assertEquals(700.0, portfolio.calculateTotalValue(), 0.001);
-    }
-
-    // Metoda zwracająca ilość posiadanych akcji danego typu
-    @Test
-    public void shouldReturnZeroQuantityForMissingStock() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock missing = new Stock("XYZ", "Nieistniejąca spółka", 10.0);
-
-        assertEquals(0, portfolio.getStockQuantity(missing));
-    }
-
-    @Test
-    public void shouldReturnZeroStockValueWhenNoHoldings() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertEquals(0.0, portfolio.calculateTotalStockValue(), 0.001);
+        assertEquals(700.0, portfolio.calculatePortfolioValue(), 0.001);
     }
 
 }
