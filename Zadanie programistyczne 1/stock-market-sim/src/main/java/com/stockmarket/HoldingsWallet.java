@@ -10,7 +10,7 @@ import com.stockmarket.exceptions.StockNotFoundInHoldingsException;
 
 public class HoldingsWallet {
 
-    private ArrayList<StockHolding> holdingsList;
+    private final ArrayList<StockHolding> holdingsList;
 
     public HoldingsWallet() {
         this.holdingsList = new ArrayList<>();

@@ -1,9 +1,6 @@
 package com.stockmarket;
 
 import com.stockmarket.exceptions.NotEnoughCashException;
-import com.stockmarket.exceptions.PortfolioWalletISFullException;
-
-// TODO: poprawić przedawniony wyjątek PortfolioWalletISFullException
 
 public class Portfolio {
 
@@ -36,7 +33,7 @@ public class Portfolio {
         return this.cash;
     }
 
-    public void addStock(Stock stock, int quantity) throws PortfolioWalletISFullException{
+    public void addStock(Stock stock, int quantity){
         holdingsWallet.addHolding(stock, quantity);
     }
     
