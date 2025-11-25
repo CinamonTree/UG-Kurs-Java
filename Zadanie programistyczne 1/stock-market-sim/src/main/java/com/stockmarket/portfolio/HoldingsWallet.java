@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.portfolio;
 
 import java.util.ArrayList;
 

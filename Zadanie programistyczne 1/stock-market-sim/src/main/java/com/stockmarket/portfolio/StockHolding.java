@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.portfolio;
 
 /**
 * Klasa StockHolding reprezentuję posiadane akcje danego typu w portfelu inwestycyjnym.

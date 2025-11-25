@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.portfolio;
 
 import com.stockmarket.exceptions.NotEnoughCashException;
 

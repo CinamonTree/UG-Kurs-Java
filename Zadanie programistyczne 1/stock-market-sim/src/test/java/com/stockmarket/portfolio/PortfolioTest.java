@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.portfolio;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

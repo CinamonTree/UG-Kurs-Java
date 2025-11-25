@@ -1,4 +1,4 @@
-package com.stockmarket;
+package com.stockmarket.portfolio;
 
 public class Stock {
     
