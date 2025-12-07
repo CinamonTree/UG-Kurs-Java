@@ -18,12 +18,12 @@ public abstract class Asset {
         this.price = validatePrice(price);
     }
 
-    public double getCode() {
-        return price;
+    public String getCode() {
+        return code;
     }
 
-    public void setCode(double price) {
-        this.price = validatePrice(price);
+    public void setCode(String code) {
+        this.code = validateAssetCode(code);
     }
 
     public abstract double getRealPrice();
@@ -36,8 +36,8 @@ public abstract class Asset {
     }
 
     private String validateAssetCode(String code) {
-        if (code.trim().isEmpty()) {
-            throw new IllegalArgumentException("Kod nie może być pustym ciągiem znaków!");
+        if (code == null || code.trim().isEmpty() ) {
+            throw new IllegalArgumentException("Kod nie może być pustym ciągiem znaków lub nullem!");
         }
         return code;
     }
