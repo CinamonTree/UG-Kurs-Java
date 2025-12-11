@@ -26,7 +26,7 @@ public class HoldingsWallet {
         }
     }
 
-    public void removeHolding(Stock stock, int quantity) throws StockNotFoundInHoldingsException {
+    public void reduceHolding(Stock stock, int quantity) throws StockNotFoundInHoldingsException {
         validateStockNotNull(stock);
         StockHolding stockHolding = findHolding(stock);
 

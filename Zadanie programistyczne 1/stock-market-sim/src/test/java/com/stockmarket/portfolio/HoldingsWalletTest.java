@@ -51,24 +51,24 @@ public class HoldingsWalletTest {
     @Test
     public void shouldThrowExceptionWhenRemovingStockWithNegativeQuantity() {
         assertThrows(IllegalArgumentException.class, 
-        () -> holdingsWallet.removeHolding(stockInHoldings, -10));
+        () -> holdingsWallet.reduceHolding(stockInHoldings, -10));
     }
 
     @Test
     public void shouldThrowExceptionWhenRemovingStockWithNullPointer() {
         assertThrows(IllegalArgumentException.class, 
-        () -> holdingsWallet.removeHolding(null, 10));
+        () -> holdingsWallet.reduceHolding(null, 10));
     }
 
     @Test
     public void shouldReduceQuantityOfHolding() {
-        holdingsWallet.removeHolding(stockInHoldings, 3);
+        holdingsWallet.reduceHolding(stockInHoldings, 3);
         assertEquals(7, holdingsWallet.getHolding(stockInHoldings).getQuantity());
     }
 
     @Test
     public void shouldRemoveHoldingWhenReducingItsQuantityToZero() {
-        holdingsWallet.removeHolding(stockInHoldings, 10);
+        holdingsWallet.reduceHolding(stockInHoldings, 10);
         assertThrows(StockNotFoundInHoldingsException.class, 
         () -> holdingsWallet.getHolding(stockInHoldings));
     }
@@ -76,7 +76,7 @@ public class HoldingsWalletTest {
     @Test
     public void shouldThrowExceptionWhenTryingToReduceHoldingBelowItsQuantity() {
         assertThrows(IllegalArgumentException.class, 
-        () -> holdingsWallet.removeHolding(null, 15));
+        () -> holdingsWallet.reduceHolding(null, 15));
     }
 
 }

@@ -14,12 +14,12 @@ public abstract class Asset {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = validatePrice(price);
-    }
-
     public String getCode() {
         return code;
+    }
+    
+    public void setPrice(double price) {
+        this.price = validatePrice(price);
     }
 
     public void setCode(String code) {
