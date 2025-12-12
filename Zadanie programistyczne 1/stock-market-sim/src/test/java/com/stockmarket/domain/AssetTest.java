@@ -18,8 +18,8 @@ public class AssetTest {
         price = new Price(Currency.getInstance("USD"), 100.0);
         asset = new Asset("AAPL", price) {
             @Override
-            public double getRealPrice() {
-                return 100.0;
+            public Price getRealPrice(int assetQuantity) {
+                return new Price(Currency.getInstance("USD"), 100.0 * assetQuantity);
             }
         };
     }
@@ -30,8 +30,8 @@ public class AssetTest {
     public void shouldCreateAsset() {
         Asset testAsset = new Asset("AAPL", price) {
             @Override
-            public double getRealPrice() {
-                return 100.0;
+            public Price getRealPrice(int assetQuantity) {
+                return new Price(Currency.getInstance("USD"), 100.0 * assetQuantity);
             }
         };
         assertEquals(price, testAsset.getPrice());
@@ -43,8 +43,8 @@ public class AssetTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Asset wrongAsset = new Asset("AAPL", new Price(Currency.getInstance("USD"), -100.0)) {
                 @Override
-                public double getRealPrice() {
-                    return 100.0;
+                public Price getRealPrice(int assetQuantity) {
+                    return new Price(Currency.getInstance("USD"), 100.0 * assetQuantity);
                 }
             };
         });
@@ -55,8 +55,8 @@ public class AssetTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Asset wrongAsset = new Asset("", price) {
                 @Override
-                public double getRealPrice() {
-                    return 100.0;
+                public Price getRealPrice(int assetQuantity) {
+                    return new Price(Currency.getInstance("USD"), 100.0 * assetQuantity);
                 }
             };
         });
@@ -67,8 +67,8 @@ public class AssetTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Asset wrongAsset = new Asset(null, price) {
                 @Override
-                public double getRealPrice() {
-                    return 100.0;
+                public Price getRealPrice(int assetQuantity) {
+                    return new Price(Currency.getInstance("USD"), 100.0 * assetQuantity);
                 }
             };
         });
@@ -124,8 +124,8 @@ public class AssetTest {
     void shouldReturnTrueWhenComparingAssetsWithSameCode() {
         Asset anotherAsset = new Asset("AAPL", new Price(Currency.getInstance("USD"), 200.0)) {
             @Override
-            public double getRealPrice() {
-                return 200.0;
+            public Price getRealPrice(int assetQuantity) {
+                return new Price(Currency.getInstance("USD"), 200.0 * assetQuantity);
             }
         };
         assertEquals(asset, anotherAsset);
@@ -147,8 +147,8 @@ public class AssetTest {
     void shouldHaveSameHashCodeForAssetsWithSameCode() {
         Asset anotherAsset = new Asset("AAPL", new Price(Currency.getInstance("USD"), 200.0)) {
             @Override
-            public double getRealPrice() {
-                return 200.0;
+            public Price getRealPrice(int assetQuantity) {
+                return new Price(Currency.getInstance("USD"), 200.0 * assetQuantity);
             }
         };
         assertEquals(asset.hashCode(), anotherAsset.hashCode());

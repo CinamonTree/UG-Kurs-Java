@@ -26,7 +26,7 @@ public abstract class Asset {
         this.code = validateAssetCode(code);
     }
 
-    public abstract double getRealPrice();
+    public abstract Price getRealPrice(int assetQuantity);
 
     private Price validatePrice(Price price) {
         if (price.getAmount() < 0) {
