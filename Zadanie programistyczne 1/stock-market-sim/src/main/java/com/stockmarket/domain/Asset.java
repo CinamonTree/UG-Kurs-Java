@@ -2,15 +2,15 @@ package com.stockmarket.domain;
 
 public abstract class Asset {
 
-    private double price;
+    private Price price;
     private String code;
 
-    public Asset(String code, double price) {
+    public Asset(String code, Price price) {
         this.code = validateAssetCode(code);
         this.price = validatePrice(price);
     }
 
-    public double getPrice() {
+    public Price getPrice() {
         return price;
     }
 
@@ -18,7 +18,7 @@ public abstract class Asset {
         return code;
     }
     
-    public void setPrice(double price) {
+    public void setPrice(Price price) {
         this.price = validatePrice(price);
     }
 
@@ -28,8 +28,8 @@ public abstract class Asset {
 
     public abstract double getRealPrice();
 
-    private double validatePrice(double price) {
-        if (price < 0) {
+    private Price validatePrice(Price price) {
+        if (price.getAmount() < 0) {
             throw new IllegalArgumentException("Cena aktywa nie może być ujemna.");
         }
         return price;
@@ -40,6 +40,24 @@ public abstract class Asset {
             throw new IllegalArgumentException("Kod nie może być pustym ciągiem znaków lub nullem!");
         }
         return code;
+    }
+
+    @Override
+    public String toString() {
+        return code;
+    }
+
+    @Override
+    public boolean equals(Object another) {
+        if (this == another) return true;
+        if (!(another instanceof Asset)) return false;
+        Asset other = (Asset) another;
+        return code.equals(other.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode();
     }
 
 }
