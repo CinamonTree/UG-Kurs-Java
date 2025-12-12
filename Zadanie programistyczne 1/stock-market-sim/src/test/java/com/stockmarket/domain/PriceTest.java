@@ -3,6 +3,7 @@ package com.stockmarket.domain;
 import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,6 +87,28 @@ public class PriceTest {
         assertEquals(USD10, anotherUSD10);
     }
 
+    @Test
+    public void shouldNotConsiderPricesWithDifferentCurrenciesAsEqual() {
+        Price anotherEUR10 = new Price(EUR, 10.0);
+        assertEquals(false, USD10.equals(anotherEUR10));
+    }
+
+    @Test
+    public void shouldNotConsiderPricesWithDifferentAmountsAsEqual() {
+        Price anotherUSD15 = new Price(USD, 15.0);
+        assertEquals(false, USD10.equals(anotherUSD15));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenComparingWithOtherClass() {
+        assertFalse(USD10.equals(new Object()));
+    }
+
+    @Test
+    public void shouldReturnFalseWhenComparingWithNull() {
+        assertFalse(USD10.equals(null));
+    }
+
     // Metoda hashCode
 
     @Test
@@ -108,6 +131,13 @@ public class PriceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             USD10.compareTo(EUR10);
         });
+    }
+
+    // Metoda toString
+
+    @Test
+    public void shouldReturnStringRepresentationOfPrice() {
+        assertEquals("10.0 USD", USD10.toString());
     }
 
 }
