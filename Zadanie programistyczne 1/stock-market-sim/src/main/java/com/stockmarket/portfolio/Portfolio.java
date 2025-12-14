@@ -1,66 +1,64 @@
 package com.stockmarket.portfolio;
 
-import com.stockmarket.exceptions.NotEnoughFundsException;
+import java.util.Currency;
+
+import com.stockmarket.domain.Asset;
+import com.stockmarket.domain.Money;
 
 public class Portfolio {
 
-    private double cash;
-    private HoldingsWallet holdingsWallet;
+    private final CashWallet cashWallet;
+    private final PositionsBook positionsBook;
 
-    public Portfolio(double initialCash) {
-        this.cash = validateCashAmount(initialCash);
-        this.holdingsWallet = new HoldingsWallet();
+    public Portfolio(double initialCashAmmount, Currency currency) {
+        currency = validateCurrency(currency);
+        initialCashAmmount = validateInitialCashAmount(initialCashAmmount);
+        this.cashWallet = new CashWallet(new Money(currency, initialCashAmmount));
+        this.positionsBook = new PositionsBook();
     }
 
-    public double getCash() {
-        return this.cash;
+    public CashWallet getCashWallet() {
+        return cashWallet;
     }
 
-    public double addCash(double amount) {
-        amount = validateCashAmount(amount);
-        this.cash += amount;
-        return this.cash;
+    public PositionsBook getPositionsBook() {
+        return positionsBook;
     }
 
-    public double withdrawCash(double amount) {
-        double validAmount = validateCashAmount(amount);
-
-        if (validAmount > this.cash) {
-            throw new NotEnoughFundsException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
-        }
-        
-        this.cash -= validAmount;
-        return this.cash;
+    public void depositCash(Money amount) {
+        this.cashWallet.deposit(amount);
     }
 
-    public void addStock(Stock stock, int quantity){
-        holdingsWallet.addHolding(stock, quantity);
-    }
-    
-    public int getTotalHoldingsCount() {
-        int count = 0;
-        for (StockHolding holding : holdingsWallet.getAllHoldings()) {
-            count += holding.getQuantity();
-        }
-        return count;
+    // TODO: Wymiana waluty przy zakupie
+
+    public void withdrawCash(Money amount) {
+        this.cashWallet.withdraw(amount);
     }
 
-    public double calculateStockValue() {
-        double total = 0.0;
-        for (StockHolding holding : this.holdingsWallet.getAllHoldings()) {
-            total += holding.calculateValue();
-        }
-        return total;
+    public void buyAsset(Asset asset, int quantity) {
+        Money assetTotalPrice = asset.getRealPrice(quantity);
+        withdrawCash(assetTotalPrice);
+        positionsBook.addPosition(asset, quantity);
     }
 
-    public double calculatePortfolioValue() {
-        return this.cash + this.calculateStockValue();
+    public void sellAsset(Asset asset, int quantity) {
+        Money assetTotalPrice = asset.getPrice().multiply(quantity);
+        depositCash(assetTotalPrice);
+        positionsBook.reducePosition(asset, quantity);
     }
 
-    private double validateCashAmount(double amount) {
+    private double validateInitialCashAmount(double amount) {
         if (amount < 0) {
-            throw new IllegalArgumentException("Kwota gotówki nie może być ujemna.");
+            throw new IllegalArgumentException("Początkowa kwota gotówki w portfelu nie może być ujemna.");
         }
         return amount;
     }
+
+    private Currency validateCurrency(Currency currency) {
+        if (currency == null) {
+            throw new IllegalArgumentException("Waluta nie może być nullem.");
+        }
+        return currency;
+    }
+
 }

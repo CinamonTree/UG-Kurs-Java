@@ -40,7 +40,7 @@ public class Position {
         return this.quantity;
     }
 
-    public Money calculatePositionPrice() {
+    public Money getPositionPrice() {
         Money assetPrice = this.asset.getPrice();
         return new Money(assetPrice.getCurrency(), assetPrice.getAmount() * this.quantity);
     }

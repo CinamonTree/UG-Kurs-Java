@@ -1,114 +1,101 @@
 package com.stockmarket.portfolio;
 
+import java.util.Currency;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.stockmarket.exceptions.NotEnoughFundsException;
+import com.stockmarket.domain.Comodity;
+import com.stockmarket.domain.Money;
+import com.stockmarket.domain.Share;
 
-public class PortfolioTest {
+class PortfolioTest {
 
-    // TODO: wyciągnąć powtarzający się kod do metod pomocniczych
+    private Portfolio portfolio;
+    private Currency usd;
+    private Share apple;
+    private Comodity oil;
+
+    @BeforeEach
+    void setUp() {
+        usd = Currency.getInstance("USD");
+        portfolio = new Portfolio(10000.0, usd);
+        apple = new Share("AAPL", "Apple Inc.", new Money(usd, 100.0), 5.0);
+        oil = new Comodity("OIL", "Oil", new Money(usd, 20.0), 2.0);
+    }
 
     // Konstruktor
-    @Test
-    public void shouldCreateEmptyPortfolioWithInitialCash() {
-        Portfolio portfolio = new Portfolio(1000.0);
 
-        assertEquals(1000.0, portfolio.getCash(), 0.001);
-        assertEquals(0, portfolio.getTotalHoldingsCount());
-        assertEquals(0.0, portfolio.calculateStockValue(), 0.001);
-        assertEquals(1000.0, portfolio.calculatePortfolioValue(), 0.001);
+    @Test
+    void shouldCreatePortfolioWithInitialCash() {
+        Money money = portfolio.getCashWallet().getMoney();
+
+        assertEquals(10000.0, money.getAmount());
+        assertEquals(usd, money.getCurrency());
     }
 
-    // Metoda dodawania gotówki
-    @Test
-    public void shouldNotAllowToAddNegativeAmountOfCash() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.addCash(-500.0));
-    }
+    // Metoda BuyAsset
 
     @Test
-    public void shouldAddCashCorrectly() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        portfolio.addCash(500.0);
-        assertEquals(1500.0, portfolio.getCash(), 0.001);
-    }
+    void shouldBuyAsset() {
+        portfolio.buyAsset(apple, 10);
 
-    // Metoda wypłacania gotówki
-    @Test
-    public void shouldWithdrawCashCorrectly() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        portfolio.withdrawCash(400.0);
-        assertEquals(600.0, portfolio.getCash(), 0.001);
+        Money cashAfterBuy = portfolio.getCashWallet().getMoney();
+        assertEquals(8995.0, cashAfterBuy.getAmount());
+
+        assertNotNull(
+            portfolio.getPositionsBook().getPosition(apple)
+        );
     }
 
     @Test
-    public void shouldNotAllowToWithdrawMoreCashThanAvailable() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(NotEnoughFundsException.class, () -> portfolio.withdrawCash(1500.0));
+    void shouldThrowExceptionWhenNotEnoughCashToBuyAsset() {
+        assertThrows(
+        RuntimeException.class,() -> {
+            portfolio.buyAsset(apple, 200);
+        });
+    }
+
+    // Metoda sellAsset
+
+    @Test
+    void shouldSellAsset() {
+        portfolio.buyAsset(apple, 10);
+        portfolio.sellAsset(apple, 5);
+
+        Money cashAfterSell = portfolio.getCashWallet().getMoney();
+        assertEquals(9495.0, cashAfterSell.getAmount());
+    }
+
+    // Polimorfizm Asset
+
+    @Test
+    void shouldCalculateDifferentPricesForDifferentAssetTypes() {
+        apple.setPrice(new Money(usd, 100.0));
+        oil.setPrice(new Money(usd, 100.0));
+        
+        portfolio.buyAsset(apple, 10);
+
+        assertEquals(portfolio.getCashWallet().getMoney().getAmount(), 8995.0);
+
+        portfolio.buyAsset(oil, 10);
+
+        assertEquals(portfolio.getCashWallet().getMoney().getAmount(), 7975.0);
     }
 
     @Test
-    public void shouldNotAllowToWithdrawNegativeAmountOfCash() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.withdrawCash(-200.0));
-    }
+    void shouldHandlePolymorphicAssetPricingOnSell() {
+        portfolio.buyAsset(apple, 5);
+        portfolio.buyAsset(oil, 5);
+        
+        portfolio.sellAsset(apple, 5);
+        portfolio.sellAsset(oil, 5);
 
-    // Metoda dodawania akcji
-    @Test
-    public void shouldAddStockCorrectly(){
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
-        portfolio.addStock(stock, 5);
-        assertEquals(5, portfolio.getTotalHoldingsCount());
-    }
-    
-    @Test
-    public void shouldThrowExceptionWhenAddingStockWithNullPointer() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(null, 10));
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenAddingStockWithNegativeQuantity() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.addStock(stock, -10));
-    }
-
-    //Metoda zliczająca całkowitą ilość akcji w portfelu
-    @Test
-    public void shouldGetTotalHoldingsCountCorrectly() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stockA = new Stock("CDR", "CD Projekt", 100.0);
-        Stock stockB = new Stock("ORLN", "Orlen", 200.0);
-        portfolio.addStock(stockA, 2);
-        portfolio.addStock(stockB, 3);
-        assertEquals(5, portfolio.getTotalHoldingsCount());
-    }
-
-    // Metoda obliczająca wartość akcji w portfelu
-    @Test
-    public void shouldCalculateStockValueCorrectly() {
-        Portfolio portfolio = new Portfolio(1000.0);
-        Stock stockA = new Stock("CDR", "CD Projekt", 100.0);
-        Stock stockB = new Stock("ORLN", "Orlen", 200.0);
-
-        portfolio.addStock(stockA, 2);
-        portfolio.addStock(stockB, 3);
-
-        assertEquals(800.0, portfolio.calculateStockValue(), 0.001);
-    }
-
-    // Metoda obliczająca wartość całego portfolio
-    @Test
-    public void shouldCalculateTotalValueCorrectly() {
-        Portfolio portfolio = new Portfolio(500.0);
-        Stock stock = new Stock("CDR", "CD Projekt", 100.0);
-
-        portfolio.addStock(stock, 2);
-        assertEquals(700.0, portfolio.calculatePortfolioValue(), 0.001);
+        Money finalCash = portfolio.getCashWallet().getMoney();
+        assertEquals(9985.0, finalCash.getAmount());
     }
 
 }

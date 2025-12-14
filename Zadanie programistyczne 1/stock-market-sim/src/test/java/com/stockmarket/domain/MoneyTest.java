@@ -84,7 +84,7 @@ public class MoneyTest {
 
     @Test
     public void shouldMultiplyMoney() {
-        Money result = USD20.subtract(USD10);
+        Money result = USD20.multiply(USD10);
         assertEquals(200.0, result.getAmount());
         assertEquals(USD, result.getCurrency());
     }
