@@ -4,12 +4,32 @@ import java.util.Currency;
 
 public class Money implements Comparable<Money> {
     
-    private Currency currency;
-    private double amount;
+    private final Currency currency;
+    private final double amount;
 
     public Money(Currency currency, double amount) {
         this.currency = validateCurrency(currency);
         this.amount = validateAmount(amount);
+    }
+
+    public Money add(Money other) {
+        boolean differentCurrencies = !this.currency.equals(other.currency);
+        if (differentCurrencies) {
+            throw new IllegalArgumentException(
+                "Nie można dodać cen w różnych walutach." 
+            );
+        }
+        return new Money(this.currency, this.amount + other.amount);
+    }
+
+    public Money subtract(Money other) {
+        boolean differentCurrencies = !this.currency.equals(other.currency);
+        if (differentCurrencies) {
+            throw new IllegalArgumentException(
+                "Nie można odjąć cen w różnych walutach." 
+            );
+        }
+        return new Money(this.currency, this.amount - other.amount);
     }
 
     public Currency getCurrency() {
@@ -18,14 +38,6 @@ public class Money implements Comparable<Money> {
 
     public double getAmount() {
         return amount;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = validateCurrency(currency);
-    }
-
-    public void setAmount(double amount) {
-        this.amount = validateAmount(amount);
     }
 
     private Currency validateCurrency(Currency currency) {

@@ -49,33 +49,34 @@ public class MoneyTest {
         });
     }
 
-    // Metoda setCurrency
+    // Metoda add
 
-    @Test
-    public void shouldSetCurrency() {
-        USD10.setCurrency(EUR);
-        assertEquals(EUR, USD10.getCurrency());
+    public void shouldAddMoneyCorrectly() {
+        Money result = USD10.add(USD20);
+        assertEquals(30.0, result.getAmount());
+        assertEquals(USD, result.getCurrency());
     }
 
     @Test
-    public void shouldThrowExceptionWhenSettingCurrencyAsNullPointer() {
-        assertThrows(IllegalArgumentException.class,() -> {
-            USD10.setCurrency(null);
+    public void shouldThrowExceptionWhenAddingPricesWithDifferentCurrencies() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            USD10.add(EUR10);
         });
     }
 
-    // metoda setAmount
+    // metoda subtract
 
     @Test
-    public void shouldSetAmount() {
-        USD10.setAmount(15.0);
-        assertEquals(15.0, USD10.getAmount());
+    public void shouldSubtractMoneyCorrectly() {
+        Money result = USD20.subtract(USD10);
+        assertEquals(10.0, result.getAmount());
+        assertEquals(USD, result.getCurrency());
     }
 
     @Test
-    public void shouldThrowExceptionWhenSettingNegativeAmount() {
-        assertThrows(IllegalArgumentException.class,() -> {
-            USD10.setAmount(-10.0);
+    public void shouldThrowExceptionWhenSubtractingPricesWithDifferentCurrencies() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            USD10.subtract(EUR10);
         });
     }
 
