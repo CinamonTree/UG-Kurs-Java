@@ -52,7 +52,7 @@ public class PortfolioTest {
     @Test
     public void shouldNotAllowToWithdrawNegativeAmountOfCash() {
         Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(NotEnoughFundsException.class, () -> portfolio.withdrawCash(-200.0));
+        assertThrows(IllegalArgumentException.class, () -> portfolio.withdrawCash(-200.0));
     }
 
     // Metoda dodawania akcji
