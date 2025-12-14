@@ -1,6 +1,6 @@
 package com.stockmarket.portfolio;
 
-import com.stockmarket.exceptions.NotEnoughCashException;
+import com.stockmarket.exceptions.NotEnoughFundsException;
 
 public class Portfolio {
 
@@ -26,7 +26,7 @@ public class Portfolio {
         double validAmount = validateCashAmount(amount);
 
         if (validAmount > this.cash) {
-            throw new NotEnoughCashException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
+            throw new NotEnoughFundsException("Nie można wypłacić więcej gotówki niż jest dostępne w portfelu.");
         }
         
         this.cash -= validAmount;

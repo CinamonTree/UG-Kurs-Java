@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
-import com.stockmarket.exceptions.NotEnoughCashException;
+import com.stockmarket.exceptions.NotEnoughFundsException;
 
 public class PortfolioTest {
 
@@ -46,13 +46,13 @@ public class PortfolioTest {
     @Test
     public void shouldNotAllowToWithdrawMoreCashThanAvailable() {
         Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(NotEnoughCashException.class, () -> portfolio.withdrawCash(1500.0));
+        assertThrows(NotEnoughFundsException.class, () -> portfolio.withdrawCash(1500.0));
     }
 
     @Test
     public void shouldNotAllowToWithdrawNegativeAmountOfCash() {
         Portfolio portfolio = new Portfolio(1000.0);
-        assertThrows(IllegalArgumentException.class, () -> portfolio.withdrawCash(-200.0));
+        assertThrows(NotEnoughFundsException.class, () -> portfolio.withdrawCash(-200.0));
     }
 
     // Metoda dodawania akcji
