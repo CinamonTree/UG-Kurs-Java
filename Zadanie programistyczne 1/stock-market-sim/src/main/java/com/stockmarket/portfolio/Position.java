@@ -41,8 +41,8 @@ public class Position {
     }
 
     public Money getPositionPrice() {
-        Money assetPrice = this.asset.getPrice();
-        return new Money(assetPrice.getCurrency(), assetPrice.getAmount() * this.quantity);
+        Money assetPrice = asset.getPrice();
+        return assetPrice.multiply(quantity);
     }
 
     private int validateQuantity(int quantity) {
