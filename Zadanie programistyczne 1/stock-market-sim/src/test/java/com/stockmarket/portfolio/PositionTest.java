@@ -12,12 +12,14 @@ import com.stockmarket.domain.Money;
 
 public class PositionTest {
 
+    private Currency usd;
     private Asset asset;
     private Position position;
     
     @BeforeEach
     void setup() {
-        Money price = new Money(Currency.getInstance("USD"), 100.0);
+        usd = Currency.getInstance("USD");
+        Money price = new Money(usd, 100.0);
         asset = new Asset("CDR", price) {
             @Override
             public Money getRealPrice(int assetQuantity) {
@@ -68,6 +70,13 @@ public class PositionTest {
     @Test
     public void shouldNotAllowReducingQuantityBelowZero() {
         assertThrows(IllegalArgumentException.class, () -> position.reduceQuantity(15));
+    }
+
+    // Metoda calculatePositionPrice
+
+    @Test
+    public void shouldCaclulatePositionPrice() {
+        assertEquals(new Money(usd, 1000.0), position.getPositionPrice());
     }
 
 }
