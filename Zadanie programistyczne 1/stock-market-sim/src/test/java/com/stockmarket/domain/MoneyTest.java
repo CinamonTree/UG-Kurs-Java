@@ -80,6 +80,31 @@ public class MoneyTest {
         });
     }
 
+    // metoda multiply
+
+    @Test
+    public void shouldMultiplyMoney() {
+        Money result = USD20.subtract(USD10);
+        assertEquals(200.0, result.getAmount());
+        assertEquals(USD, result.getCurrency());
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenMultiplyingPricesWithDifferentCurrencies() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            USD10.subtract(EUR10);
+        });
+    }
+
+    // metoda multiply (int)
+
+    @Test
+    public void shouldMultiplyMoneyWithInteger() {
+        Money result = USD20.multiply(5);
+        assertEquals(100.0, result.getAmount());
+        assertEquals(USD, result.getCurrency());
+    }
+
     // Metoda equals
 
     @Test

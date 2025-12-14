@@ -32,6 +32,20 @@ public class Money implements Comparable<Money> {
         return new Money(this.currency, this.amount - other.amount);
     }
 
+    public Money multiply(Money other) {
+        boolean differentCurrencies = !this.currency.equals(other.currency);
+        if (differentCurrencies) {
+            throw new IllegalArgumentException(
+                "Nie można dodać cen w różnych walutach." 
+            );
+        }
+        return new Money(this.currency, this.amount * other.amount);
+    }
+
+    public Money multiply(int amount) {
+        return new Money(this.currency, this.amount * amount);
+    }
+
     public Currency getCurrency() {
         return currency;
     }
