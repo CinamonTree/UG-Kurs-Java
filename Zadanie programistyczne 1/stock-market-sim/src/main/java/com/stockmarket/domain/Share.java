@@ -5,7 +5,7 @@ public class Share extends Asset {
     private String companyName;
     private double manipulationFee = 5.0;
 
-    public Share(String code, String companyName, Price price, double manipulationFee) {
+    public Share(String code, String companyName, Money price, double manipulationFee) {
         super(code, price);
         this.companyName = validateCompanyName(companyName);
         this.manipulationFee = validateManipulationFee(manipulationFee);
@@ -28,10 +28,10 @@ public class Share extends Asset {
     }
 
     @Override
-    public Price getRealPrice(int shareQuantity) {
-        Price sharePrice = getPrice();
+    public Money getRealPrice(int shareQuantity) {
+        Money sharePrice = getPrice();
         double totalPriceAmount = sharePrice.getAmount() * shareQuantity + manipulationFee;
-        return new Price(sharePrice.getCurrency(), totalPriceAmount);
+        return new Money(sharePrice.getCurrency(), totalPriceAmount);
     }
 
     private String validateCompanyName(String companyName) {

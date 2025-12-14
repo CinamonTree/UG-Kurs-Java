@@ -11,13 +11,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 public class ComodityTest {
 
     private Comodity gold;
-    private Price price;
+    private Money price;
     private Currency currency;
 
     @BeforeEach
     public void setUp() {
         currency = Currency.getInstance("PLN");
-        price = new Price(currency, 100.0);
+        price = new Money(currency, 100.0);
         gold = new Comodity("GLD", "Gold", price, 5.0);
         
     }
@@ -87,7 +87,7 @@ public class ComodityTest {
         "10, 1050.0",
     })
     public void shouldCalculateRealPrice(int quantity, double expected) {
-        Price real = gold.getRealPrice(quantity);
+        Money real = gold.getRealPrice(quantity);
         assertEquals(expected, real.getAmount(), 0.0001);
     }
 

@@ -1,7 +1,7 @@
 package com.stockmarket.portfolio;
 
 import com.stockmarket.domain.Asset;
-import com.stockmarket.domain.Price;
+import com.stockmarket.domain.Money;
 
 /**
 * Klasa StockHolding reprezentuję posiadane akcje danego typu w portfelu inwestycyjnym.
@@ -40,9 +40,9 @@ public class Position {
         return this.quantity;
     }
 
-    public Price calculatePositionPrice() {
-        Price assetPrice = this.asset.getPrice();
-        return new Price(assetPrice.getCurrency(), assetPrice.getAmount() * this.quantity);
+    public Money calculatePositionPrice() {
+        Money assetPrice = this.asset.getPrice();
+        return new Money(assetPrice.getCurrency(), assetPrice.getAmount() * this.quantity);
     }
 
     private int validateQuantity(int quantity) {

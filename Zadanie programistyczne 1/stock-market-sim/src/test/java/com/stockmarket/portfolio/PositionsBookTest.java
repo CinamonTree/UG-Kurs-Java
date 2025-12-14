@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.stockmarket.domain.Asset;
-import com.stockmarket.domain.Price;
+import com.stockmarket.domain.Money;
 import com.stockmarket.exceptions.AssetNotFoundInPositionsException;
 
 public class PositionsBookTest {
@@ -21,17 +21,17 @@ public class PositionsBookTest {
     @BeforeEach
     public void setup() {
         positionsBook = new PositionsBook();
-        Price price = new Price(Currency.getInstance("PLN"), 100.0);
+        Money price = new Money(Currency.getInstance("PLN"), 100.0);
         asset = new Asset("CDR", price){
             @Override
-            public Price getRealPrice(int assetQuantity) {
+            public Money getRealPrice(int assetQuantity) {
                 return price;
             }
         };
-        Price price2 = new Price(Currency.getInstance("USD"), 200.0);
+        Money price2 = new Money(Currency.getInstance("USD"), 200.0);
         assetInBook = new Asset("ORL", price2){
             @Override
-            public Price getRealPrice(int assetQuantity) {
+            public Money getRealPrice(int assetQuantity) {
                 return price;
             }
         };

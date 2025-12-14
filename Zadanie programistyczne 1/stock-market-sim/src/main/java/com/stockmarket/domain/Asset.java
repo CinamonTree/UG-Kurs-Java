@@ -2,15 +2,15 @@ package com.stockmarket.domain;
 
 public abstract class Asset {
 
-    private Price price;
+    private Money price;
     private String code;
 
-    public Asset(String code, Price price) {
+    public Asset(String code, Money price) {
         this.code = validateAssetCode(code);
         this.price = validatePrice(price);
     }
 
-    public Price getPrice() {
+    public Money getPrice() {
         return price;
     }
 
@@ -18,7 +18,7 @@ public abstract class Asset {
         return code;
     }
     
-    public void setPrice(Price price) {
+    public void setPrice(Money price) {
         this.price = validatePrice(price);
     }
 
@@ -26,9 +26,9 @@ public abstract class Asset {
         this.code = validateAssetCode(code);
     }
 
-    public abstract Price getRealPrice(int assetQuantity);
+    public abstract Money getRealPrice(int assetQuantity);
 
-    private Price validatePrice(Price price) {
+    private Money validatePrice(Money price) {
         if (price.getAmount() < 0) {
             throw new IllegalArgumentException("Cena aktywa nie może być ujemna.");
         }

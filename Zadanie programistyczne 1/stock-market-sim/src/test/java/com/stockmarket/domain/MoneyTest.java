@@ -8,11 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class PriceTest {
+public class MoneyTest {
     
-    private Price USD10;
-    private Price USD20;
-    private Price EUR10;
+    private Money USD10;
+    private Money USD20;
+    private Money EUR10;
     private Currency USD;
     private Currency EUR;
 
@@ -20,16 +20,16 @@ public class PriceTest {
     public void setUp() {
         USD = Currency.getInstance("USD");
         EUR = Currency.getInstance("EUR");
-        USD10 = new Price(USD, 10.0);
-        USD20 = new Price(USD, 20.0);
-        EUR10 = new Price(EUR, 10.0);
+        USD10 = new Money(USD, 10.0);
+        USD20 = new Money(USD, 20.0);
+        EUR10 = new Money(EUR, 10.0);
     }
         
     // Konstruktor
 
     @Test
     public void shouldCreatePrice() {
-        Price price = new Price(USD, 10.0);
+        Money price = new Money(USD, 10.0);
 
         assertEquals(USD, price.getCurrency());
         assertEquals(10.0, price.getAmount());
@@ -38,14 +38,14 @@ public class PriceTest {
     @Test
     public void shouldThrowExceptionWhenCreatingPriceWithNegativeAmount() {
         assertThrows(IllegalArgumentException.class,() -> {
-            new Price(USD, -5.0);
+            new Money(USD, -5.0);
         });
     }
 
     @Test
     public void shouldThrowExceptionWhenCreatingPriceWithNullPointerCurrency() {
         assertThrows(IllegalArgumentException.class,() -> {
-            new Price(null, 10.0);
+            new Money(null, 10.0);
         });
     }
 
@@ -83,19 +83,19 @@ public class PriceTest {
 
     @Test
     public void shouldComparePricesByCurrencyAndAmount() {
-        Price anotherUSD10 = new Price(USD, 10.0);
+        Money anotherUSD10 = new Money(USD, 10.0);
         assertEquals(USD10, anotherUSD10);
     }
 
     @Test
     public void shouldNotConsiderPricesWithDifferentCurrenciesAsEqual() {
-        Price anotherEUR10 = new Price(EUR, 10.0);
+        Money anotherEUR10 = new Money(EUR, 10.0);
         assertEquals(false, USD10.equals(anotherEUR10));
     }
 
     @Test
     public void shouldNotConsiderPricesWithDifferentAmountsAsEqual() {
-        Price anotherUSD15 = new Price(USD, 15.0);
+        Money anotherUSD15 = new Money(USD, 15.0);
         assertEquals(false, USD10.equals(anotherUSD15));
     }
 
@@ -113,7 +113,7 @@ public class PriceTest {
 
     @Test
     public void shouldGenerateHashCodeBasedOnCurrencyAndAmount() {
-        Price anotherUSD10 = new Price(USD, 10.0);
+        Money anotherUSD10 = new Money(USD, 10.0);
         assertEquals(USD10.hashCode(), anotherUSD10.hashCode());
     }
 
@@ -123,7 +123,7 @@ public class PriceTest {
     public void shouldComparePricesCorrectly() {
         assertEquals(-1, USD10.compareTo(USD20));
         assertEquals(1, USD20.compareTo(USD10));
-        assertEquals(0, USD10.compareTo(new Price(USD, 10.0)));
+        assertEquals(0, USD10.compareTo(new Money(USD, 10.0)));
     }
 
     @Test

@@ -13,12 +13,12 @@ public class ShareTest {
 
     private Share share;
     private Currency USD;
-    private Price price;
+    private Money price;
 
     @BeforeEach
     public void setup() {
         USD = Currency.getInstance("USD");
-        price = new Price(USD, 100.0);
+        price = new Money(USD, 100.0);
         share = new Share("AAPL", "Apple Inc.", price, 5.0);
     }
 
@@ -27,7 +27,7 @@ public class ShareTest {
     @Test
     public void shouldCreateShare() {
         Currency USD = Currency.getInstance("USD");
-        Price price = new Price(USD, 100.0);
+        Money price = new Money(USD, 100.0);
         Share share = new Share("AAPL", "Apple Inc.", price, 5.0);
 
         assertEquals("AAPL", share.getCode());
@@ -99,7 +99,7 @@ public class ShareTest {
     @ParameterizedTest
     @ValueSource(ints = {1, 2, 3, 5})
     public void shouldCalculateRealPrice(int quantity) {
-        Price realPrice = share.getRealPrice(quantity);
+        Money realPrice = share.getRealPrice(quantity);
         assert(realPrice.getAmount() == 100.0 * quantity + 5.0);
     }
 

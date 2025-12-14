@@ -5,7 +5,7 @@ public class Comodity extends Asset {
     private String name;
     private double handlingFee;
 
-    public Comodity(String code, String name, Price price, double handlingFee) {
+    public Comodity(String code, String name, Money price, double handlingFee) {
         super(code, price);
         this.name = validateName(name);
         this.handlingFee = validateHandlingFee(handlingFee);
@@ -28,10 +28,10 @@ public class Comodity extends Asset {
     }
 
     @Override
-    public Price getRealPrice(int assetQuantity) {
+    public Money getRealPrice(int assetQuantity) {
         double unitPriceAmount = getPrice().getAmount();
         double totalAmount = unitPriceAmount * assetQuantity + (handlingFee * assetQuantity);
-        return new Price(getPrice().getCurrency(), totalAmount);
+        return new Money(getPrice().getCurrency(), totalAmount);
     }
 
     private String validateName(String name) {

@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.stockmarket.domain.Price;
 import com.stockmarket.domain.Asset;
+import com.stockmarket.domain.Money;
 
 public class PositionTest {
 
@@ -17,10 +17,10 @@ public class PositionTest {
     
     @BeforeEach
     void setup() {
-        Price price = new Price(Currency.getInstance("USD"), 100.0);
+        Money price = new Money(Currency.getInstance("USD"), 100.0);
         asset = new Asset("CDR", price) {
             @Override
-            public Price getRealPrice(int assetQuantity) {
+            public Money getRealPrice(int assetQuantity) {
                 return price;
             }
         };

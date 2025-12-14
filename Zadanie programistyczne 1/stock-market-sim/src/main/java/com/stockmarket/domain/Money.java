@@ -2,12 +2,12 @@ package com.stockmarket.domain;
 
 import java.util.Currency;
 
-public class Price implements Comparable<Price> {
+public class Money implements Comparable<Money> {
     
     private Currency currency;
     private double amount;
 
-    public Price(Currency currency, double amount) {
+    public Money(Currency currency, double amount) {
         this.currency = validateCurrency(currency);
         this.amount = validateAmount(amount);
     }
@@ -51,7 +51,7 @@ public class Price implements Comparable<Price> {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || this.getClass() != obj.getClass()) return false;
-        Price other = (Price) obj;
+        Money other = (Money) obj;
         return amount == other.amount && currency.equals(other.currency);
     }
 
@@ -65,7 +65,7 @@ public class Price implements Comparable<Price> {
     }
 
     @Override
-    public int compareTo(Price other) {
+    public int compareTo(Money other) {
         boolean differentCurrencies = !this.currency.equals(other.currency);
         if (differentCurrencies) {
             throw new IllegalArgumentException(
